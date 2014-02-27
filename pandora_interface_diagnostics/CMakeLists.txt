@@ -6,6 +6,7 @@ find_package(catkin REQUIRED COMPONENTS
             state_manager_communications 
             diagnostic_updater 
             interface_tester
+            cmake_modules
             )
             
 find_package(TinyXML REQUIRED)
