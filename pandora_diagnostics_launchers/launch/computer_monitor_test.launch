@@ -17,6 +17,6 @@
     <param name="num_cores" value="-1" type="int" />
   </node>
   
-  <include file="$(find pandora_diagnostics)/launch/aggregator.launch"/>
+  <include file="$(find pandora_diagnostics_launchers)/launch/diagnostic_aggregator.launch"/>
 
 </launch>

@@ -49,7 +49,7 @@ NodeDiagnostics::NodeDiagnostics() :
 
 void NodeDiagnostics::nodeDiagnostics(
   diagnostic_updater::DiagnosticStatusWrapper &stat){
-    
+  ROS_ERROR("diag");
   bool allOk = true;
   
   TiXmlElement * packageElement;

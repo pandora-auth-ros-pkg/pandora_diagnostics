@@ -64,7 +64,7 @@ class NodeDiagnostics: GenericDiagnostic, StateClient {
   
  private:
 
-  void nodeDiagnostics(diagnostic_updater::DiagnosticStatusWrapper &stat);
+  virtual void nodeDiagnostics(diagnostic_updater::DiagnosticStatusWrapper &stat);
 
   void nodeExistanceDiagnostic(TiXmlElement* nodeElement, 
     diagnostic_updater::DiagnosticStatusWrapper &stat, bool & allOk);

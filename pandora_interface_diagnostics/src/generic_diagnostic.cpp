@@ -41,7 +41,7 @@
 GenericDiagnostic::GenericDiagnostic(std::string diagnosticName):nh() {
   _updater.add(diagnosticName,this, &GenericDiagnostic::nodeDiagnostics);
   _timer = nh.createTimer(ros::Duration(4),
-    &GenericDiagnostic::diagnosticTimerCallback,this);
+    &GenericDiagnostic::diagnosticTimerCallback, this);
   _updater.setHardwareID("none");
     
 };

@@ -3,7 +3,7 @@
         name="diagnostic_aggregator" >
 
     <rosparam command="load" 
-              file="$(find diagnostics)/config/pandora_computer_diagnostics.yaml" />
+              file="$(find pandora_diagnostics_launchers)/config/pandora_computer_diagnostics.yaml" />
   </node>
   
   </launch>

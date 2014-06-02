@@ -1,7 +1,7 @@
 <package>
 
-  <node name =interface_diagnostics >
-    
+  <node name = "interface_diagnostics_node" >
+    interface_diagnostics_node
     <publisher type="std_msgs/Image" name="/data_fusion/face_direction_alert" exclude_states="2, 3" include_states="1" optional="true"/>
     <publisher type="std_msgs/Image" optional="true">/data_fusion/hole_direction_alert</publisher>
     <publisher>/data_fusion/mlx_direction_alert</publisher>
