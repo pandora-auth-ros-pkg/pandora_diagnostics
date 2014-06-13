@@ -166,7 +166,9 @@ bool InterfaceTester::checkForNode(std::string nodeName) {
   ros::master::getNodes (nodes);
   
   bool found = false;
+  
   for (unsigned int ii = 0; ii < nodes.size(); ii++){
+
     if (nodes.at(ii) == nodeName){
       found = true;
       break;

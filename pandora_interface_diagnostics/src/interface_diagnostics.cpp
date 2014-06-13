@@ -98,11 +98,15 @@ InterfaceDiagnostics::~InterfaceDiagnostics() {}
 void InterfaceDiagnostics::nodePublisherDiagnostic(TiXmlElement* nodeElement, 
   diagnostic_updater::DiagnosticStatusWrapper &stat,bool& allOk){
   
+  ROS_ERROR("OOOOOOOOO");
   std::vector<std::string> children = getChildren(nodeElement,"publisher");
-  std::string nodeName = trim((std::string)nodeElement->GetText());
+  std::string nodeName = nodeElement->Attribute("name");
+  
 
   for (int ii=0; ii<children.size(); ++ii) {
+    ROS_ERROR("AAAAAAAAA");
     if (!InterfaceTester::checkForNodePublishing(children[ii],nodeName)){
+      ROS_ERROR("EEEEEEEEEE");
       stat.add(nodeName + " is not publishing", children[ii]);
       allOk = false;
     }  

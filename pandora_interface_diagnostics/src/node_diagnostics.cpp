@@ -36,7 +36,7 @@
 *   Nikos Gountas 
 *   Triantafyllos Afouras <afourast@gmail.com>
 *********************************************************************/
-
+ #include <sstream>
 #include "pandora_interface_diagnostics/node_diagnostics.h"
 
 NodeDiagnostics::NodeDiagnostics() :
@@ -49,7 +49,7 @@ NodeDiagnostics::NodeDiagnostics() :
 
 void NodeDiagnostics::nodeDiagnostics(
   diagnostic_updater::DiagnosticStatusWrapper &stat){
-  ROS_ERROR("diag");
+  
   bool allOk = true;
   
   TiXmlElement * packageElement;
@@ -59,8 +59,8 @@ void NodeDiagnostics::nodeDiagnostics(
 
     //~ Suppose there is only one package element in each document
     packageElement = docsVector_[ii]->FirstChildElement("package");
-   
     nodeElement = packageElement->FirstChildElement("node"); 
+    
     while(nodeElement) {
       nodeExistanceDiagnostic(nodeElement, stat, allOk);
       nodeElement = nodeElement->NextSiblingElement( "node" );
@@ -70,6 +70,7 @@ void NodeDiagnostics::nodeDiagnostics(
       stat.summary(diagnostic_msgs::DiagnosticStatus::OK,
         "All nodes are up and running");
     } else {
+      
       stat.summary(diagnostic_msgs::DiagnosticStatus::WARN,
         "Some nodes are down");
     }
@@ -82,9 +83,8 @@ NodeDiagnostics::~NodeDiagnostics() {}
 
 void NodeDiagnostics::nodeExistanceDiagnostic(TiXmlElement* nodeElement, 
   diagnostic_updater::DiagnosticStatusWrapper &stat, bool & allOk) {
-  
-  std::string nodeName = trim((std::string)nodeElement->GetText());
     
+  std::string nodeName = nodeElement->Attribute("name");
   if (!InterfaceTester::checkForNode(nodeName)){
     stat.add(nodeName,"Down");
     allOk = false;
