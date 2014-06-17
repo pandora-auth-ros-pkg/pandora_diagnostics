@@ -187,8 +187,7 @@ void InterfaceDiagnostics::tfTransformDiagnostic(TiXmlElement* tfParentElement,
         tfParentName+" --> "+children[ii]);
       allOk = false;
     }  
-  }y
-
+  }
 }
 
 std::vector<std::string> InterfaceDiagnostics::getChildren(
