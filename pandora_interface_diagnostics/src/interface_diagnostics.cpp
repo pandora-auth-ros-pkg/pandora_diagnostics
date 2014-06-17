@@ -178,20 +178,16 @@ void InterfaceDiagnostics::tfPublisherDiagnostic(TiXmlElement* nodeElement,
 
 void InterfaceDiagnostics::tfTransformDiagnostic(TiXmlElement* tfParentElement, 
   diagnostic_updater::DiagnosticStatusWrapper &stat, bool & allOk){
-  ROS_ERROR("AAAAA");
   std::vector<std::string> children = getChildren(tfParentElement,"tf-publisher");
   std::string tfParentName = tfParentElement->Attribute("name");
-  ROS_ERROR("%s", tfParentName.c_str());
-  ROS_ERROR("%s", children[0].c_str());
+
   for (int ii=0; ii<children.size(); ++ii) {
     if (!InterfaceTester::checkForTF(children[ii],tfParentName)){
-      ROS_ERROR("OOOOOO");
       stat.add("Tf not published: ",
         tfParentName+" --> "+children[ii]);
       allOk = false;
     }  
-  }
-  ROS_ERROR("mmmmm");
+  }y
 
 }
 
