@@ -21,12 +21,47 @@
 -->
   
 <node name = "/talker" >
-    asdasdads
-  
-    <publisher > talker</publisher>
-    
 
+    <publisher topic = "/chatter" />  
+    
+</node>
+  
+<node name = "/listener" >
+  
+    <subscriber topic = "/chatter" /> 
+    
   </node>
+
+
+
+<node name = "/victim_validation_client_py" >
+  
+    <actionClient topic = "/victimValidation" actionName = "/victimValidation" /> 
+    
+  </node>
+
+
+<node name = "/victimValidation" >
+  
+    <actionServer topic = "/victimValidation" serviceName = "/victimValidation" /> 
+    
+  </node>
+  
+<node name ="/turtle1_tf_broadcaster">
+  <tf-publisher topic = "turtle1"/>
+
+</node>
+
+
+<tf name = "turtle1">
+   <tf-publisher topic = "turtle2"/>
+
+</tf>
+
+  
+
+
+
 <!--
   <node>
     /data_fusion/alert_handler
@@ -44,7 +79,7 @@
 
     <actionServer>/data_fusion/get_victims</actionServer>
 
-    <publisher>/data_fusion/victim_found</publisher>
+    <tf -publisher>/data_fusion/victim_found</publisher>
     <publisher>/data_fusion/victim_updated</publisher>
 
   </node>

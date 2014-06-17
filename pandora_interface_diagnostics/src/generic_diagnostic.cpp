@@ -35,7 +35,7 @@
 * Authors: 
 *   Miltiadis Allamanis <mallamanis@gmail.com>
 *********************************************************************/
-
+# include <sstream>
 #include "pandora_interface_diagnostics/generic_diagnostic.h"
 
 GenericDiagnostic::GenericDiagnostic(std::string diagnosticName):nh() {

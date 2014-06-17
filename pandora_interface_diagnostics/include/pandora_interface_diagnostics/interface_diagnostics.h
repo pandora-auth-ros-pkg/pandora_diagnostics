@@ -81,8 +81,8 @@ class InterfaceDiagnostics: GenericDiagnostic, StateClient {
   void tfTransformDiagnostic(TiXmlElement* nodeElement, 
     diagnostic_updater::DiagnosticStatusWrapper &stat, bool & allOk);
   
-  std::vector<std::string> getChildren(
-    TiXmlElement* parentElement,std::string nodeName);
+  std::vector<std::string> getChildren(TiXmlElement* parentElement,
+   std::string nodeName, std::string attribute = "topic");
 
   std::vector<TiXmlDocument*> docsVector_;
 

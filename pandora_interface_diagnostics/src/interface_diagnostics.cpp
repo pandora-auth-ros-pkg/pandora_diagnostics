@@ -65,6 +65,7 @@ void InterfaceDiagnostics::nodeDiagnostics(
    
     nodeElement = packageElement->FirstChildElement("node"); 
     while(nodeElement) {
+      
       nodePublisherDiagnostic(nodeElement, stat, allOk);
       nodeSubscriberDiagnostic(nodeElement, stat, allOk);
       
@@ -79,7 +80,7 @@ void InterfaceDiagnostics::nodeDiagnostics(
     tfElement = packageElement->FirstChildElement("tf"); 
     while(tfElement) {
       tfTransformDiagnostic(tfElement, stat, allOk);
-      tfElement = nodeElement->NextSiblingElement( "node" );
+      tfElement = tfElement->NextSiblingElement( "tf" );
     }
     
     if (allOk) {
@@ -98,15 +99,13 @@ InterfaceDiagnostics::~InterfaceDiagnostics() {}
 void InterfaceDiagnostics::nodePublisherDiagnostic(TiXmlElement* nodeElement, 
   diagnostic_updater::DiagnosticStatusWrapper &stat,bool& allOk){
   
-  ROS_ERROR("OOOOOOOOO");
+  
   std::vector<std::string> children = getChildren(nodeElement,"publisher");
   std::string nodeName = nodeElement->Attribute("name");
   
 
   for (int ii=0; ii<children.size(); ++ii) {
-    ROS_ERROR("AAAAAAAAA");
     if (!InterfaceTester::checkForNodePublishing(children[ii],nodeName)){
-      ROS_ERROR("EEEEEEEEEE");
       stat.add(nodeName + " is not publishing", children[ii]);
       allOk = false;
     }  
@@ -118,7 +117,7 @@ void InterfaceDiagnostics::nodeSubscriberDiagnostic(TiXmlElement* nodeElement,
   diagnostic_updater::DiagnosticStatusWrapper &stat, bool & allOk){
 
   std::vector<std::string> children = getChildren(nodeElement,"subscriber");
-  std::string nodeName = trim((std::string)nodeElement->GetText());
+  std::string nodeName = nodeElement->Attribute("name");
 
   for (int ii=0; ii<children.size(); ++ii) {
     if (!InterfaceTester::checkForSubscribedNode(children[ii],nodeName)){
@@ -131,11 +130,12 @@ void InterfaceDiagnostics::nodeSubscriberDiagnostic(TiXmlElement* nodeElement,
 
 void InterfaceDiagnostics::nodeActionServerDiagnostic(TiXmlElement* nodeElement, 
   diagnostic_updater::DiagnosticStatusWrapper &stat, bool & allOk){
-
   std::vector<std::string> children = 
-  getChildren(nodeElement,"actionServer");
+  getChildren(nodeElement,"actionServer","serviceName");
 
-  std::string nodeName = trim((std::string)nodeElement->GetText());
+
+  std::string nodeName = nodeElement->Attribute("name");
+
 
   for (int ii=0; ii<children.size(); ++ii) {
     if (!InterfaceTester::checkForActionNodeServer(children[ii],nodeName)){
@@ -148,12 +148,12 @@ void InterfaceDiagnostics::nodeActionServerDiagnostic(TiXmlElement* nodeElement,
 
 void InterfaceDiagnostics::nodeActionClientDiagnostic(TiXmlElement* nodeElement, 
   diagnostic_updater::DiagnosticStatusWrapper &stat, bool & allOk){
-
-  std::vector<std::string> children = getChildren(nodeElement,"actionClient");
-  std::string nodeName = trim((std::string)nodeElement->GetText());
-
+ 
+  std::vector<std::string> children = getChildren(nodeElement,"actionClient" , "actionName");
+  std::string nodeName = nodeElement->Attribute("name");
+ 
   for (int ii=0; ii<children.size(); ++ii) {
-    if (!InterfaceTester::checkForActionNodeServer(children[ii],nodeName)){
+    if (!InterfaceTester::checkForActionNodeClient(children[ii],nodeName)){
       stat.add(nodeName + " is not an action client to", children[ii]);
       allOk = false;
     }  
@@ -165,10 +165,10 @@ void InterfaceDiagnostics::tfPublisherDiagnostic(TiXmlElement* nodeElement,
   diagnostic_updater::DiagnosticStatusWrapper &stat, bool & allOk){
 
   std::vector<std::string> children = getChildren(nodeElement,"tf-publisher");
-  std::string nodeName = trim((std::string)nodeElement->GetText());
-
-  for (int ii=0; ii<children.size(); ++ii) {
-    if (!tfMonitor_.checkForPublishedTF(children[ii],nodeName)){
+  std::string nodeName = nodeElement->Attribute("name");
+  
+  for (int ii=0; ii < children.size(); ++ ii) {
+    if (!tfMonitor_.checkForPublishedTF(children[ii], nodeName)){
       stat.add(nodeName + " not publishing tf to frame", children[ii]);
       allOk = false;
     }  
@@ -178,28 +178,31 @@ void InterfaceDiagnostics::tfPublisherDiagnostic(TiXmlElement* nodeElement,
 
 void InterfaceDiagnostics::tfTransformDiagnostic(TiXmlElement* tfParentElement, 
   diagnostic_updater::DiagnosticStatusWrapper &stat, bool & allOk){
-
+  ROS_ERROR("AAAAA");
   std::vector<std::string> children = getChildren(tfParentElement,"tf-publisher");
-  std::string tfParentName = tfParentElement->GetText();
-
+  std::string tfParentName = tfParentElement->Attribute("name");
+  ROS_ERROR("%s", tfParentName.c_str());
+  ROS_ERROR("%s", children[0].c_str());
   for (int ii=0; ii<children.size(); ++ii) {
     if (!InterfaceTester::checkForTF(children[ii],tfParentName)){
+      ROS_ERROR("OOOOOO");
       stat.add("Tf not published: ",
         tfParentName+" --> "+children[ii]);
       allOk = false;
     }  
   }
+  ROS_ERROR("mmmmm");
 
 }
 
 std::vector<std::string> InterfaceDiagnostics::getChildren(
-  TiXmlElement* parentElement,std::string type){
+  TiXmlElement* parentElement,std::string type ,std::string attribute ){
   
   std::vector<std::string> children;
   
   TiXmlElement* currentElement = parentElement->FirstChildElement(type);
   while(currentElement) {
-    children.push_back(trim((std::string)currentElement->GetText()));
+    children.push_back(currentElement->Attribute("topic"));
     currentElement = currentElement->NextSiblingElement(type);  
   }
   return children;

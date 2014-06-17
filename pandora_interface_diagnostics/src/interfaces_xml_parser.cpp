@@ -99,7 +99,7 @@ InterfacesXmlParser::InterfacesXmlParser() {
 };
 
 InterfacesXmlParser::~InterfacesXmlParser(){
-  for(int ii=0;ii<docsVector_.size();ii++){
+  for(int ii=0; ii < docsVector_.size(); ii++){
     delete docsVector_[ii]; 
   }
 }

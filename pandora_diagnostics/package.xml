@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<package>
+  <name>pandora_diagnostics</name>
+  <version>0.0.0</version>
+  <description>Contains pandora diagnostics  packages</description>
+
+  <maintainer email="chamzask@gmail.com">Chamzas Konstantinos</maintainer>
+
+  <license>BSD</license>
+  
+  
+  <url type="bugtracker">https://github.com/pandora-auth-ros-pkg/pandora_diagnostics/issues</url>
+  <url type="repository">https://github.com/pandora-auth-ros-pkg/pandora_diagnostics</url>
+
+  <author>Gountas Nikos</author>
+  <author>Afouras Triantafyllos</author>
+  
+  <buildtool_depend>catkin</buildtool_depend>
+  
+  <run_depend>interface_tester</run_depend>
+  <run_depend>pandora_interface_diagnostics</run_depend>
+  <run_depend>pandora_diagnostics_launchers</run_depend>
+  <run_depend>pandora_bounds_diagnostics</run_depend>
+
+  <export>
+    <metapackage/>
+  </export>  
+</package>

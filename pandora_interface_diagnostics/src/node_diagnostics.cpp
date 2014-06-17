@@ -36,7 +36,7 @@
 *   Nikos Gountas 
 *   Triantafyllos Afouras <afourast@gmail.com>
 *********************************************************************/
- #include <sstream>
+
 #include "pandora_interface_diagnostics/node_diagnostics.h"
 
 NodeDiagnostics::NodeDiagnostics() :
