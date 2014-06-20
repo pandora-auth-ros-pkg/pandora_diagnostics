@@ -15,7 +15,7 @@
 -->
   
     <node name="interface_diagnostics_node" 
-      type="interface_diagnostics_node" pkg="pandora_interface_diagnostics" />
+      type="interface_diagnostics_node" pkg="pandora_interface_diagnostics" output = "screen" />
 
     
 </launch>

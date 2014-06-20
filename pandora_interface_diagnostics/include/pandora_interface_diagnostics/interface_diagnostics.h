@@ -49,6 +49,7 @@
 #include "interface_tester/tf_monitor.h"
 #include "interface_tester/interface_tester.h"
 
+#include <sstream>
 #include "trimming.h"
 #include "generic_diagnostic.h"
 #include "interfaces_xml_parser.h"

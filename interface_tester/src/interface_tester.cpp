@@ -213,7 +213,6 @@ bool InterfaceTester::checkForActionClient(
 bool InterfaceTester::checkForActionNodeClient(
     std::string actionName, std::string nodeName) {
       
-      ROS_ERROR("%s",actionName.c_str());
   return checkForNodePublishing(actionName+"/goal", nodeName) && 
     checkForNodePublishing(actionName+"/cancel", nodeName) &&
     checkForSubscribedNode(actionName+"/feedback", nodeName) &&
@@ -225,16 +224,13 @@ bool InterfaceTester::checkForActionNodeClient(
 bool InterfaceTester::checkForTF(std::string parent, std::string child) {
   tf::TransformListener _listener;
   bool flag = true;
-  ROS_ERROR("OLO");
   try 
   {
     flag = _listener.waitForTransform( parent , child, ros::Time(0), ros::Duration(1));
   }
-  
   catch (tf::TransformException ex)
       {
-        ROS_ERROR("[ALERT_HANDLER %d]%s", __LINE__, ex.what());
+        ROS_ERROR("[TF_FAILED %d]%s", __LINE__, ex.what());
       }
-  ROS_ERROR("OLO");  
   return flag;
 }

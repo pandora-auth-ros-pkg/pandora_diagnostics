@@ -22,13 +22,14 @@
   
 <node name = "/talker" >
 
-    <publisher topic = "/chatter" />  
+    <publisher topic = "/chatter" type = "std_msgs/Int16" optional = "true" exclude_states = "2 ,3 ,4" include_states = "1 , 5" />
+      
     
 </node>
   
 <node name = "/listener" >
   
-    <subscriber topic = "/chatter" /> 
+    <subscriber topic = "/chatter" type = "std_msgs/Int16" optional = "true"/> 
     
   </node>
 

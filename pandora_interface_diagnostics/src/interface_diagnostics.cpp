@@ -36,8 +36,8 @@
 *   Nikos Gountas 
 *   Triantafyllos Afouras <afourast@gmail.com>
 *********************************************************************/
-
 #include "pandora_interface_diagnostics/interface_diagnostics.h"
+#include <ros/console.h>
 
 InterfaceDiagnostics::InterfaceDiagnostics() :
     GenericDiagnostic("System Interfaces"), 
@@ -62,8 +62,8 @@ void InterfaceDiagnostics::nodeDiagnostics(
 
     //~ Suppose there is only one package element in each document
     packageElement = docsVector_[ii]->FirstChildElement("package");
-   
     nodeElement = packageElement->FirstChildElement("node"); 
+    
     while(nodeElement) {
       
       nodePublisherDiagnostic(nodeElement, stat, allOk);
@@ -117,16 +117,23 @@ void InterfaceDiagnostics::nodeSubscriberDiagnostic(TiXmlElement* nodeElement,
   diagnostic_updater::DiagnosticStatusWrapper &stat, bool & allOk){
 
   std::vector<std::string> children = getChildren(nodeElement,"subscriber");
-  std::string nodeName = nodeElement->Attribute("name");
-
-  for (int ii=0; ii<children.size(); ++ii) {
-    if (!InterfaceTester::checkForSubscribedNode(children[ii],nodeName)){
-      stat.add(nodeName + " is not subscribed at", children[ii]);
-      allOk = false;
-    }  
+  ROS_WARN_NAMED("INTERFACE_DIAGNOSTICS","Some Nodes dont have a name attribute");
+  if(!nodeElement->Attribute("name")){
+    
+    ROS_WARN("Some Nodes dont have a name attribute");
   }
-
-}
+  else{
+    
+    std::string nodeName = nodeElement->Attribute("name");
+    
+    for (int ii=0; ii<children.size(); ++ii) {
+      if (!InterfaceTester::checkForSubscribedNode(children[ii],nodeName)){
+        stat.add(nodeName + " is not subscribed at", children[ii]);
+        allOk = false;
+       }  
+     }
+   }
+ }
 
 void InterfaceDiagnostics::nodeActionServerDiagnostic(TiXmlElement* nodeElement, 
   diagnostic_updater::DiagnosticStatusWrapper &stat, bool & allOk){
@@ -184,7 +191,7 @@ void InterfaceDiagnostics::tfTransformDiagnostic(TiXmlElement* tfParentElement,
   for (int ii=0; ii<children.size(); ++ii) {
     if (!InterfaceTester::checkForTF(children[ii],tfParentName)){
       stat.add("Tf not published: ",
-        tfParentName+" --> "+children[ii]);
+        tfParentName + " --> "+children[ii]);
       allOk = false;
     }  
   }
@@ -197,8 +204,9 @@ std::vector<std::string> InterfaceDiagnostics::getChildren(
   
   TiXmlElement* currentElement = parentElement->FirstChildElement(type);
   while(currentElement) {
-    children.push_back(currentElement->Attribute("topic"));
+    children.push_back(currentElement->Attribute(attribute.c_str()));
     currentElement = currentElement->NextSiblingElement(type);  
   }
   return children;
 }
+
