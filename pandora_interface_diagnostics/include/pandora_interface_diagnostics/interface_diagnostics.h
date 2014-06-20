@@ -41,6 +41,7 @@
 #define INTERFACEDIAGNOSTICS_H
 
 #include <iostream>
+#include <sstream>
 #include "tinyxml.h"
 #include <stdio.h>
 
@@ -49,7 +50,7 @@
 #include "interface_tester/tf_monitor.h"
 #include "interface_tester/interface_tester.h"
 
-#include <sstream>
+#include <ros/console.h>
 #include "trimming.h"
 #include "generic_diagnostic.h"
 #include "interfaces_xml_parser.h"
@@ -81,14 +82,21 @@ class InterfaceDiagnostics: GenericDiagnostic, StateClient {
     diagnostic_updater::DiagnosticStatusWrapper &stat, bool & allOk);
   void tfTransformDiagnostic(TiXmlElement* nodeElement, 
     diagnostic_updater::DiagnosticStatusWrapper &stat, bool & allOk);
-  
-  std::vector<std::string> getChildren(TiXmlElement* parentElement,
-   std::string nodeName, std::string attribute = "topic");
+    
+  std::vector<int> stringToIntiger(char* strList);
+  std::vector<int> getStates(TiXmlElement* nodeName,
+   std::string type, std::string type2);
+  std::vector<std::string> getChildren(TiXmlElement* nodeName,
+   std::string type, std::string attribute = "topic");
 
   std::vector<TiXmlDocument*> docsVector_;
 
   InterfacesXmlParser parser_;
   interface_tester::TFMonitor tfMonitor_;
+  
+  int currentState_;
+  
+  
 
 };
 
