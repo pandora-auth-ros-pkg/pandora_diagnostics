@@ -231,6 +231,7 @@ std::vector<std::string> InterfaceDiagnostics::getChildren(
   while(currentElement){
 
     if (currentElement->Attribute("optional")){
+      ROS_ERROR("%s",currentElement->Attribute("optional"));
       if (!(currentElement->Attribute("optional") == "true")){
         children.push_back(currentElement->Attribute(attribute.c_str()));
       }
@@ -269,6 +270,7 @@ std::vector<int> InterfaceDiagnostics::stringToIntiger( char* strList){
        }
        else{
           int element = atoi(eValue.c_str());
+          ROS_ERROR("%d",element);
           eValue.clear();
           list.push_back(element);
        }
