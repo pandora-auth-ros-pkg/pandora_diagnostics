@@ -32,8 +32,8 @@
 *  ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 *  POSSIBILITY OF SUCH DAMAGE.
 *
-* Authors: 
-*   Nikos Gountas 
+* Authors:
+*   Nikos Gountas
 *   Triantafyllos Afouras <afourast@gmail.com>
 *********************************************************************/
 
@@ -53,22 +53,22 @@
 #include "interfaces_xml_parser.h"
 
 class NodeDiagnostics: GenericDiagnostic, StateClient {
-  
+
  public:
-  
+
   NodeDiagnostics();
-  
+
   ~NodeDiagnostics();
 
   virtual void startTransition (int newState);
-  
+
  private:
 
   virtual void nodeDiagnostics(diagnostic_updater::DiagnosticStatusWrapper &stat);
 
-  void nodeExistanceDiagnostic(TiXmlElement* nodeElement, 
+  void nodeExistanceDiagnostic(TiXmlElement* nodeElement,
     diagnostic_updater::DiagnosticStatusWrapper &stat, bool & allOk);
-  
+
   std::vector<TiXmlDocument*> docsVector_;
 
   InterfacesXmlParser parser_;

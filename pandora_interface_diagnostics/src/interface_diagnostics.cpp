@@ -43,6 +43,7 @@ InterfaceDiagnostics::InterfaceDiagnostics() :
     GenericDiagnostic("System Interfaces"),
     StateClient(false) {
 
+  currentState_ = 0;
   docsVector_ = parser_.getDocsVector();
 
 };
@@ -231,8 +232,7 @@ std::vector<std::string> InterfaceDiagnostics::getChildren(
   while(currentElement){
 
     if (currentElement->Attribute("optional")){
-      ROS_ERROR("%s",currentElement->Attribute("optional"));
-      if (!(currentElement->Attribute("optional") == "true")){
+      if (string("true").compare(currentElement->Attribute("optional"))){
         children.push_back(currentElement->Attribute(attribute.c_str()));
       }
     }
@@ -246,35 +246,31 @@ std::vector<std::string> InterfaceDiagnostics::getChildren(
 }
 
 std::vector<int> InterfaceDiagnostics::getStates(
-  TiXmlElement* parentElement,std::string type ,std::string type2  ){
+  TiXmlElement* parentElement,std::string type ,std::string states_type  ){
 
   std::vector<int>  states;
 
   TiXmlElement* currentElement = parentElement->FirstChildElement(type);
    
-  std::string maria = currentElement->Attribute(type2.c_str());
-  states = (stringToIntiger(strdup(maria.c_str())));
+  states =  stringToIntiger(currentElement->Attribute(states_type.c_str()));
   
   return states;
 }
 
 
-std::vector<int> InterfaceDiagnostics::stringToIntiger( char* strList){
-    string eValue;
+std::vector<int> InterfaceDiagnostics::stringToIntiger( std::string sample){
+
     std::vector<int> list;
+    std::vector<std::string> strs;
+    boost::split(strs, sample, boost::is_any_of(","));
 
-    for(int ii = 0; ii < strlen(strList); ii++){
-
-       if(strList[ii]!=','){
-           eValue.push_back(strList[ii]);
-       }
-       else{
-          int element = atoi(eValue.c_str());
+    for(int ii = 0; ii < strs.size(); ii++){
+      
+          int element = atoi(strs[ii].c_str());
           ROS_ERROR("%d",element);
-          eValue.clear();
+          ROS_ERROR("%s",strs[ii].c_str());
           list.push_back(element);
        }
-    }
     return list;
 }
 

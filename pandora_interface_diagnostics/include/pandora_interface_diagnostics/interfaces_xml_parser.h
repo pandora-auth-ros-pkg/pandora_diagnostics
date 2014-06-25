@@ -44,7 +44,6 @@
 #include <vector>
 #include <tinyxml.h>
 #include <ros/ros.h>
-
 #include "trimming.h"
 
 class InterfacesXmlParser{

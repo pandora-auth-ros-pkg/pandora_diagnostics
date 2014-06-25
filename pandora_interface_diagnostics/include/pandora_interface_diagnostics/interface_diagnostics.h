@@ -45,6 +45,7 @@
 #include "tinyxml.h"
 #include <stdio.h>
 
+#include <boost/algorithm/string.hpp>
 #include <ros/ros.h>
 #include "state_manager/state_client.h"
 #include "interface_tester/tf_monitor.h"
@@ -83,9 +84,9 @@ class InterfaceDiagnostics: GenericDiagnostic, StateClient {
   void tfTransformDiagnostic(TiXmlElement* nodeElement, 
     diagnostic_updater::DiagnosticStatusWrapper &stat, bool & allOk);
     
-  std::vector<int> stringToIntiger(char* strList);
+  std::vector<int> stringToIntiger(std::string sample);
   std::vector<int> getStates(TiXmlElement* nodeName,
-   std::string type, std::string type2);
+   std::string type, std::string states_type);
   std::vector<std::string> getChildren(TiXmlElement* nodeName,
    std::string type, std::string attribute = "topic");
 
@@ -95,8 +96,6 @@ class InterfaceDiagnostics: GenericDiagnostic, StateClient {
   interface_tester::TFMonitor tfMonitor_;
   
   int currentState_;
-  
-  
 
 };
 

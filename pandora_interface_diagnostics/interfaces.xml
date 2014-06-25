@@ -32,8 +32,8 @@
 <node name = "/listener" >
   
     <subscriber topic = "/chatter" type = "std_msgs/Int16"
-        exclude_states = "1,2,3,"
-        include_states = "4,5,"
+        exclude_states = "1,2,3"
+        include_states = "4,5"
         optional = "true" /> 
     
   </node>
