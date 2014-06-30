@@ -49,6 +49,7 @@ target_link_libraries(node_diagnostics
       generic_diagnostic
       interfaces_xml_parser
       interface_tester
+      info_element
       )
 add_dependencies(node_diagnostics state_manager_msgs_gencpp)
 
@@ -69,10 +70,7 @@ add_library(info_element src/info_element.cpp)
 target_link_libraries(interface_diagnostics   
       ${catkin_LIBRARIES}
       ${TinyXML_LIBRARIES}
-      generic_diagnostic
-      interfaces_xml_parser
-      interface_tester
-      tf_monitor
+
       )
 add_dependencies(interface_diagnostics state_manager_communications_gencpp)
 

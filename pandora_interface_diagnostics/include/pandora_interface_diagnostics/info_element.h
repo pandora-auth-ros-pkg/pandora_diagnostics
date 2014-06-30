@@ -46,7 +46,6 @@
 #include <boost/algorithm/string.hpp>
 #include <ros/ros.h>
 #include "state_manager/state_client.h"
-#include "interface_tester/tf_monitor.h"
 #include "interface_tester/interface_tester.h"
 
 #include <ros/console.h>
@@ -69,8 +68,8 @@ class InfoElement {
   ~InfoElement();
   
   std::vector<InfoElement *> getAllElements();
-  InfoElement * FirstChildElement(const std::string &_value);
-  InfoElement * NextSiblingElement(const std::string &_value);
+  std::vector<InfoElement *> getChildren(std::string type );
+  std::string Attribute(std::string attribute);
   //~ bool checkForAttribute(const std::string &_value);
   //~ bool checkForAttributes( const std::vector<string> &_values);
 
@@ -79,7 +78,7 @@ class InfoElement {
 
 
   std::vector<TiXmlDocument*> docsVector_;
-  TiXmlElement * Element_;
+  TiXmlElement * XmlElement_;
   InterfacesXmlParser parser_;
 
 };

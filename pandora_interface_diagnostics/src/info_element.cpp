@@ -42,13 +42,13 @@
 InfoElement::InfoElement(){
   
   docsVector_ = parser_.getDocsVector();
-  Element_ = NULL ;
+  XmlElement_ = NULL ;
 }
 
 InfoElement::InfoElement(TiXmlElement*  newElement){
   
   docsVector_.push_back(NULL);
-  Element_ = newElement;
+  XmlElement_ = newElement;
 }
 
 InfoElement::~InfoElement() {}
@@ -69,15 +69,36 @@ std::vector<InfoElement *> InfoElement::getAllElements(){
 
 
 
-  InfoElement * InfoElement::FirstChildElement(const std::string &_value){
-    
-    return NULL;
-  }
+std::vector<InfoElement *> InfoElement::getChildren(
+  std::string type) {
+
+  std::vector<InfoElement *> children;
+
+  TiXmlElement* currentElement = XmlElement_->FirstChildElement(type);
   
-  InfoElement * InfoElement::NextSiblingElement(const std::string &_value)
-  {
-    return NULL;
+  while(currentElement){
+
+    if (currentElement->Attribute("optional")){
+      if (string("true").compare(currentElement->Attribute("optional"))){
+
+        InfoElement* newElement = new InfoElement(currentElement);
+        children.push_back(newElement);
+      }
+    }
+    else {
+      ROS_WARN("Some children dont have an optional attribute");
+    }
+
+    currentElement = currentElement->NextSiblingElement(type);
   }
+  return children;
+}
+
+std::string InfoElement::Attribute(std::string attribute){
+    
+    
+    return XmlElement_->Attribute(attribute.c_str());
+}
 
 
 

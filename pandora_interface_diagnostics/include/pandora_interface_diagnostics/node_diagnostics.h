@@ -41,12 +41,12 @@
 #define NODE_DIAGNOSTICS_H
 
 #include <iostream>
-#include "tinyxml.h"
 #include <stdio.h>
 
 #include <ros/ros.h>
 #include "state_manager/state_client.h"
 #include "interface_tester/interface_tester.h"
+#include "pandora_interface_diagnostics/info_element.h"
 
 #include "trimming.h"
 #include "generic_diagnostic.h"
@@ -66,12 +66,12 @@ class NodeDiagnostics: GenericDiagnostic, StateClient {
 
   virtual void nodeDiagnostics(diagnostic_updater::DiagnosticStatusWrapper &stat);
 
-  void nodeExistanceDiagnostic(TiXmlElement* nodeElement,
+  void nodeExistanceDiagnostic(InfoElement* nodeElement,
     diagnostic_updater::DiagnosticStatusWrapper &stat, bool & allOk);
 
-  std::vector<TiXmlDocument*> docsVector_;
+  std::vector<InfoElement*> packages_;
+  InfoElement* ParentElement_;
 
-  InterfacesXmlParser parser_;
 
 };
 

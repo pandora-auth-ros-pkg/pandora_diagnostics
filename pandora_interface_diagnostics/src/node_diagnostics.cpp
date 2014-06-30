@@ -42,8 +42,9 @@
 NodeDiagnostics::NodeDiagnostics() :
   GenericDiagnostic("System Nodes"),
   StateClient(false) {
-  
-  docsVector_ = parser_.getDocsVector();
+    
+  ParentElement_ = new InfoElement();
+  packages_= ParentElement_->getAllElements();
 
 }
 
@@ -51,25 +52,20 @@ void NodeDiagnostics::nodeDiagnostics(
   diagnostic_updater::DiagnosticStatusWrapper &stat){
   
   bool allOk = true;
+  std::vector<InfoElement*> nodeElements;
   
-  TiXmlElement * packageElement;
-  TiXmlElement * nodeElement;
-  
-  for(int ii=0; ii < docsVector_.size(); ii++){
+  for(int ii=0; ii < packages_.size(); ii++){
 
-    //~ Suppose there is only one package element in each document
-    packageElement = docsVector_[ii]->FirstChildElement("package");
-    nodeElement = packageElement->FirstChildElement("node"); 
+    nodeElements = packages_[ii]->getChildren("node"); 
+    for(int jj=0; jj < nodeElements.size(); jj++){ 
     
-    while(nodeElement) {
-      nodeExistanceDiagnostic(nodeElement, stat, allOk);
-      nodeElement = nodeElement->NextSiblingElement( "node" );
+      nodeExistanceDiagnostic(nodeElements[jj], stat, allOk);
     }
-    
     if (allOk) {
       stat.summary(diagnostic_msgs::DiagnosticStatus::OK,
         "All nodes are up and running");
-    } else {
+    }
+     else {
       
       stat.summary(diagnostic_msgs::DiagnosticStatus::WARN,
         "Some nodes are down");
@@ -81,7 +77,7 @@ void NodeDiagnostics::nodeDiagnostics(
 
 NodeDiagnostics::~NodeDiagnostics() {}
 
-void NodeDiagnostics::nodeExistanceDiagnostic(TiXmlElement* nodeElement, 
+void NodeDiagnostics::nodeExistanceDiagnostic(InfoElement* nodeElement, 
   diagnostic_updater::DiagnosticStatusWrapper &stat, bool & allOk) {
     
   std::string nodeName = nodeElement->Attribute("name");
