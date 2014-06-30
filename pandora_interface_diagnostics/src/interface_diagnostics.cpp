@@ -164,13 +164,14 @@ void InterfaceDiagnostics::nodeSubscriberDiagnostic(TiXmlElement* nodeElement,
 void InterfaceDiagnostics::nodeActionServerDiagnostic(TiXmlElement* nodeElement,
   diagnostic_updater::DiagnosticStatusWrapper &stat, bool & allOk){
   std::vector<std::string> children =
+
   getChildren(nodeElement,"actionServer","serviceName");
 
 
   std::string nodeName = nodeElement->Attribute("name");
 
-
   for (int ii=0; ii<children.size(); ++ii) {
+    
     if (!InterfaceTester::checkForActionNodeServer(children[ii],nodeName)){
       stat.add(nodeName + " is not providing action server", children[ii]);
       allOk = false;

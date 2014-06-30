@@ -33,6 +33,72 @@
 *  POSSIBILITY OF SUCH DAMAGE.
 *
 * Authors: 
-*   Nikos Gountas 
-*   Triantafyllos Afouras <afourast@gmail.com>
+*   Chamzas Konstantinos <chamzask@gmail.com>
 *********************************************************************/
+
+#include "pandora_interface_diagnostics/info_element.h"
+
+
+InfoElement::InfoElement(){
+  
+  docsVector_ = parser_.getDocsVector();
+  Element_ = NULL ;
+}
+
+InfoElement::InfoElement(TiXmlElement*  newElement){
+  
+  docsVector_.push_back(NULL);
+  Element_ = newElement;
+}
+
+InfoElement::~InfoElement() {}
+
+std::vector<InfoElement *> InfoElement::getAllElements(){
+  
+  std::vector<InfoElement *> elements ;
+
+  for(int ii=0; ii < docsVector_.size(); ii++){
+    
+    InfoElement* newElement = new InfoElement(
+      docsVector_[ii]->FirstChildElement("package"));
+    elements.push_back(newElement);
+  }
+  
+  return elements;
+}
+
+
+
+  InfoElement * InfoElement::FirstChildElement(const std::string &_value){
+    
+    return NULL;
+  }
+  
+  InfoElement * InfoElement::NextSiblingElement(const std::string &_value)
+  {
+    return NULL;
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

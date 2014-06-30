@@ -33,6 +33,55 @@
 *  POSSIBILITY OF SUCH DAMAGE.
 *
 * Authors: 
-*   Nikos Gountas 
-*   Triantafyllos Afouras <afourast@gmail.com>
+* Chamzas Konstantinos <chamzask@gmail.com>
 *********************************************************************/
+#ifndef INFOELEMENT_H
+#define INFOELEMENT_H
+
+#include <iostream>
+#include <sstream>
+#include "tinyxml.h"
+#include <stdio.h>
+
+#include <boost/algorithm/string.hpp>
+#include <ros/ros.h>
+#include "state_manager/state_client.h"
+#include "interface_tester/tf_monitor.h"
+#include "interface_tester/interface_tester.h"
+
+#include <ros/console.h>
+#include "trimming.h"
+#include "generic_diagnostic.h"
+#include "interfaces_xml_parser.h"
+
+
+
+
+
+
+class InfoElement {
+
+ public:
+
+  InfoElement();
+  InfoElement(TiXmlElement*  newElement);
+
+  ~InfoElement();
+  
+  std::vector<InfoElement *> getAllElements();
+  InfoElement * FirstChildElement(const std::string &_value);
+  InfoElement * NextSiblingElement(const std::string &_value);
+  //~ bool checkForAttribute(const std::string &_value);
+  //~ bool checkForAttributes( const std::vector<string> &_values);
+
+
+ private:
+
+
+  std::vector<TiXmlDocument*> docsVector_;
+  TiXmlElement * Element_;
+  InterfacesXmlParser parser_;
+
+};
+
+#endif

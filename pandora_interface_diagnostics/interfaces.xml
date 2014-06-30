@@ -23,7 +23,7 @@
 <node name = "/talker" >
 
     <publisher topic = "/chatter" type = "std_msgs/Int16" 
-               optional = "true" exclude_states = "2,3,4"
+               optional = "false" exclude_states = "2,3,4"
                include_states = "1,5" />
       
     
@@ -34,7 +34,7 @@
     <subscriber topic = "/chatter" type = "std_msgs/Int16"
         exclude_states = "1,2,3"
         include_states = "4,5"
-        optional = "true" /> 
+        optional = "false" /> 
     
   </node>
 
