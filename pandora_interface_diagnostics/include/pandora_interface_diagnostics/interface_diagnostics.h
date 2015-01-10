@@ -37,66 +37,43 @@
 *   Triantafyllos Afouras <afourast@gmail.com>
 *********************************************************************/
 
-#ifndef INTERFACEDIAGNOSTICS_H
-#define INTERFACEDIAGNOSTICS_H
+#ifndef INTERFACE_DIAGNOSTICS_H
+#define INTERFACE_DIAGNOSTICS_H
 
-#include <iostream>
-#include <sstream>
-#include "tinyxml.h"
-#include <stdio.h>
-
-#include <boost/algorithm/string.hpp>
-#include <ros/ros.h>
-#include "state_manager/state_client.h"
 #include "interface_tester/tf_monitor.h"
-#include "interface_tester/interface_tester.h"
+#include "info_element.h"
 
-#include <ros/console.h>
-#include "trimming.h"
-#include "generic_diagnostic.h"
-#include "interfaces_xml_parser.h"
+class InterfaceDiagnostics: GenericDiagnostic, StateClient 
+{
+  public:
+    InterfaceDiagnostics();
+    ~InterfaceDiagnostics();
+    virtual void startTransition (int newState);
 
-class InterfaceDiagnostics: GenericDiagnostic, StateClient {
-  
- public:
-  
-  InterfaceDiagnostics();
-  
-  ~InterfaceDiagnostics();
+  private:
+    void nodeDiagnostics(diagnostic_updater::DiagnosticStatusWrapper &stat);
+    void nodePublisherDiagnostic(InfoElement* nodeElement, diagnostic_updater::DiagnosticStatusWrapper &stat, 
+      bool & allOk);
+    void nodeSubscriberDiagnostic(InfoElement* nodeElement, diagnostic_updater::DiagnosticStatusWrapper &stat, 
+      bool & allOk);
+    void nodeActionServerDiagnostic(InfoElement* nodeElement, diagnostic_updater::DiagnosticStatusWrapper &stat, 
+      bool & allOk);
+    void nodeActionClientDiagnostic(InfoElement* nodeElement, diagnostic_updater::DiagnosticStatusWrapper &stat,
+      bool & allOk);
 
-  virtual void startTransition (int newState);
-  
- private:
+    void tfPublisherDiagnostic(InfoElement* nodeElement, diagnostic_updater::DiagnosticStatusWrapper &stat,
+      bool & allOk);
+    void tfTransformDiagnostic(InfoElement* nodeElement, diagnostic_updater::DiagnosticStatusWrapper &stat, 
+      bool & allOk);
 
-  void nodeDiagnostics(diagnostic_updater::DiagnosticStatusWrapper &stat);
-
-  void nodePublisherDiagnostic(TiXmlElement* nodeElement, 
-    diagnostic_updater::DiagnosticStatusWrapper &stat, bool & allOk);
-  void nodeSubscriberDiagnostic(TiXmlElement* nodeElement, 
-    diagnostic_updater::DiagnosticStatusWrapper &stat, bool & allOk);
-  void nodeActionServerDiagnostic(TiXmlElement* nodeElement, 
-    diagnostic_updater::DiagnosticStatusWrapper &stat, bool & allOk);
-  void nodeActionClientDiagnostic(TiXmlElement* nodeElement, 
-    diagnostic_updater::DiagnosticStatusWrapper &stat, bool & allOk);
-  
-  void tfPublisherDiagnostic(TiXmlElement* nodeElement, 
-    diagnostic_updater::DiagnosticStatusWrapper &stat, bool & allOk);
-  void tfTransformDiagnostic(TiXmlElement* nodeElement, 
-    diagnostic_updater::DiagnosticStatusWrapper &stat, bool & allOk);
+    std::vector<int> stringToInteger(std::string sample);
+    std::vector<int> getStates(InfoElement* nodeName, std::string type, std::string states_type);
+    std::vector<std::string> getChildren(InfoElement* nodeName, std::string type, std::string attribute = "topic");
     
-  std::vector<int> stringToIntiger(std::string sample);
-  std::vector<int> getStates(TiXmlElement* nodeName,
-   std::string type, std::string states_type);
-  std::vector<std::string> getChildren(TiXmlElement* nodeName,
-   std::string type, std::string attribute = "topic");
-
-  std::vector<TiXmlDocument*> docsVector_;
-
-  InterfacesXmlParser parser_;
-  interface_tester::TFMonitor tfMonitor_;
-  
-  int currentState_;
-
+    std::vector<InfoElement*> packages_;
+    InfoElement* ParentElement_;
+    interface_tester::TFMonitor tfMonitor_;
+    int currentState_;
 };
 
-#endif
+#endif  // INTERFACE_DIAGNOSTICS_H

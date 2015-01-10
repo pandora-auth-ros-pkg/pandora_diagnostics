@@ -34,56 +34,65 @@ catkin_package(
 
 add_library(generic_diagnostic src/generic_diagnostic.cpp)
 target_link_libraries(generic_diagnostic   
-      ${catkin_LIBRARIES}
-      )
-      
+  ${catkin_LIBRARIES}
+  )
+
 add_library(interfaces_xml_parser src/interfaces_xml_parser.cpp)
 target_link_libraries(interfaces_xml_parser   
-      ${catkin_LIBRARIES}
-      )
+  ${catkin_LIBRARIES}
+  )
 
 add_library(node_diagnostics src/node_diagnostics.cpp)
 target_link_libraries(node_diagnostics   
-      ${catkin_LIBRARIES}
-      ${TinyXML_LIBRARIES}
-      generic_diagnostic
-      interfaces_xml_parser
-      interface_tester
-      info_element
-      )
+  ${catkin_LIBRARIES}
+  ${TinyXML_LIBRARIES}
+  generic_diagnostic
+  interfaces_xml_parser
+  interface_tester
+  info_element
+  )
 add_dependencies(node_diagnostics state_manager_msgs_gencpp)
 
 add_library(interface_diagnostics src/interface_diagnostics.cpp)
 target_link_libraries(interface_diagnostics   
-      ${catkin_LIBRARIES}
-      ${TinyXML_LIBRARIES}
-      generic_diagnostic
-      interfaces_xml_parser
-      interface_tester
-      tf_monitor
-      )
+  ${catkin_LIBRARIES}
+  ${TinyXML_LIBRARIES}
+  generic_diagnostic
+  interfaces_xml_parser
+  interface_tester
+  tf_monitor
+  )
 add_dependencies(interface_diagnostics state_manager_msgs_gencpp)
 
-
-
 add_library(info_element src/info_element.cpp)
-target_link_libraries(interface_diagnostics   
-      ${catkin_LIBRARIES}
-      ${TinyXML_LIBRARIES}
-
-      )
+target_link_libraries(info_element   
+  ${catkin_LIBRARIES}
+  ${TinyXML_LIBRARIES}
+  interfaces_xml_parser
+  )
 add_dependencies(interface_diagnostics state_manager_communications_gencpp)
 
 add_executable(interface_diagnostics_node src/interface_diagnostics_node.cpp)
 target_link_libraries(interface_diagnostics_node   
-      ${catkin_LIBRARIES}
-      ${TinyXML_LIBRARIES}
-      node_diagnostics
-      interface_diagnostics
-      generic_diagnostic
-      interfaces_xml_parser
-      interface_tester
-      tf_monitor
-      )
+  ${catkin_LIBRARIES}
+  ${TinyXML_LIBRARIES}
+  node_diagnostics
+  interface_diagnostics
+  generic_diagnostic
+  interfaces_xml_parser
+  interface_tester
+  tf_monitor
+  )
 add_dependencies(interface_diagnostics_node state_manager_msgs_gencpp)
+
+########################  roslint  ##################################
+
+#~ FILE(GLOB_RECURSE ${PROJECT_NAME}_LINT_SRCS 
+  #~ RELATIVE ${PROJECT_SOURCE_DIR} 
+    #~ include/pandora_interface_diagnostics/*.h 
+    #~ src/*.cpp
+    #~ )
+#~ set(ROSLINT_CPP_OPTS 
+    #~ "--filter=-runtime/references")
+
 
