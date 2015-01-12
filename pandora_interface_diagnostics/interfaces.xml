@@ -19,46 +19,54 @@
   </node>
   
 -->
+    
+  <node name = "/talker"   optional = "false" >
   
-<node name = "/talker" >
-
-    <publisher topic = "/chatter" type = "std_msgs/Int16" 
-               optional = "false" exclude_states = "2,3,4"
-               include_states = "1,5" />
+      <publisher topic = "/chatter" type = "std_msgs/Int16" 
+                 optional = "false" exclude_states = "2,3,4"
+                 include_states = "1,5" />
+        
       
+  </node>
     
-</node>
+  <node name = "/listener"   optional = "false" >
+    
+      <subscriber topic = "/chatter" type = "std_msgs/Int16"
+          exclude_states = "2,3"
+          include_states = "1,4,5"
+          optional = "false" /> 
+      
+    </node>
+
+
+
+<node name = "/victim_validation_client_py" optional = "false"  >
   
-<node name = "/listener" >
-  
-    <subscriber topic = "/chatter" type = "std_msgs/Int16"
-        exclude_states = "1,2,3"
-        include_states = "4,5"
-        optional = "false" /> 
+    <actionClient  actionName = "/victimValidation"
+     topic = "/chatter" type = "std_msgs/Int16"
+          exclude_states = "2,3"
+          include_states = "1,4,5"
+          optional = "false"
+     /> 
     
   </node>
 
 
-<!--
-<node name = "/victim_validation_client_py" >
+<node name = "/victimValidation"  optional = "false"  >
   
-    <actionClient  actionName = "/victimValidation" /> 
+    <actionServer  serviceName = "/victimValidation" topic = "/chatter" type = "std_msgs/Int16"
+          exclude_states = "2,3"
+          include_states = "1,4,5"
+          optional = "false" /> 
     
   </node>
-
-
-<node name = "/victimValidation" >
-  
-    <actionServer  serviceName = "/victimValidation" /> 
-    
-  </node>
-  
+  <!--
 <node name ="/turtle1_tf_broadcaster">
   <tf-publisher topic = "turtle1"/>
 
 </node>
 
-
+<!--
 <tf name = "turtle1">
    <tf-publisher topic = "turtle2"/>
 

@@ -41,7 +41,7 @@
 
 InterfaceDiagnostics::InterfaceDiagnostics() : GenericDiagnostic("System Interfaces"), StateClient(false) 
 {
-  currentState_ = 0;
+  currentState_ = 1;
   ParentElement_ = new InfoElement();
   packages_= ParentElement_->getAllElements();
 }
@@ -157,7 +157,7 @@ void InterfaceDiagnostics::nodeSubscriberDiagnostic(InfoElement* nodeElement,
       bool isExcluded = std::find(exclude_states.begin(), exclude_states.end(), currentState_) != exclude_states.end();
       bool isUp = InterfaceTester::checkForSubscribedNode(subscribers[ii], nodeName);
 
-      if (isIncluded && isExcluded)
+      if ((isIncluded && isExcluded)|| (!isIncluded && !isExcluded))
       {
         ROS_WARN("OMG THIS CANNOT HAPPEN");
       }
@@ -390,8 +390,8 @@ std::vector<int> InterfaceDiagnostics::stringToInteger(std::string sample)
   for (int ii = 0; ii < strs.size(); ii++)
   {
     int element = atoi(strs[ii].c_str());
-    ROS_ERROR("%d", element);
-    ROS_ERROR("%s", strs[ii].c_str());
+    //~ ROS_ERROR("%d", element);
+    //~ ROS_ERROR("%s", strs[ii].c_str());
     list.push_back(element);
   }
   return list;
