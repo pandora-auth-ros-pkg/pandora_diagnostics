@@ -44,25 +44,20 @@
 #include <vector>
 #include <tinyxml.h>
 #include <ros/ros.h>
-#include "trimming.h"
+#include "pandora_interface_diagnostics/trimming.h"
 
 class InterfacesXmlParser{
-  
- public:
-  
-  InterfacesXmlParser();
-  
-  ~InterfacesXmlParser();
+  public:
+    InterfacesXmlParser();
+    ~InterfacesXmlParser();
 
-  const std::vector<TiXmlDocument*>& getDocsVector() { 
+    const std::vector<TiXmlDocument*>& getDocsVector() { 
     return docsVector_;
-  }
+    }
 
- private:
-
-  void loadFiles(boost::shared_ptr<TiXmlDocument> doc);
-  std::vector<TiXmlDocument*> docsVector_;
-  
+  private:
+    void loadFiles(boost::shared_ptr<TiXmlDocument> doc);
+    std::vector<TiXmlDocument*> docsVector_;
 };
 
-#endif
+#endif  // INTERFACES_XML_PARSER_H

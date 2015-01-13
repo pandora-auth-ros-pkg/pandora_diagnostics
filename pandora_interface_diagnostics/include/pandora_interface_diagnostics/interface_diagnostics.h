@@ -40,31 +40,33 @@
 #ifndef INTERFACE_DIAGNOSTICS_H
 #define INTERFACE_DIAGNOSTICS_H
 
+#include <string>
+#include <vector>
 #include "interface_tester/tf_monitor.h"
-#include "info_element.h"
+#include "pandora_interface_diagnostics/info_element.h"
 
 class InterfaceDiagnostics: GenericDiagnostic, StateClient 
 {
   public:
     InterfaceDiagnostics();
     ~InterfaceDiagnostics();
-    virtual void startTransition (int newState);
+    virtual void startTransition(int newState);
 
   private:
-    void nodeDiagnostics(diagnostic_updater::DiagnosticStatusWrapper &stat);
-    void nodePublisherDiagnostic(InfoElement* nodeElement, diagnostic_updater::DiagnosticStatusWrapper &stat, 
-      bool & allOk);
+    void nodeDiagnostics(diagnostic_updater::DiagnosticStatusWrapper& stat);
+    void nodePublisherDiagnostic(InfoElement* nodeElement, diagnostic_updater::DiagnosticStatusWrapper& stat, 
+      bool& allOk);
     void nodeSubscriberDiagnostic(InfoElement* nodeElement, diagnostic_updater::DiagnosticStatusWrapper &stat, 
-      bool & allOk);
-    void nodeActionServerDiagnostic(InfoElement* nodeElement, diagnostic_updater::DiagnosticStatusWrapper &stat, 
-      bool & allOk);
-    void nodeActionClientDiagnostic(InfoElement* nodeElement, diagnostic_updater::DiagnosticStatusWrapper &stat,
-      bool & allOk);
+      bool& allOk);
+    void nodeActionServerDiagnostic(InfoElement* nodeElement, diagnostic_updater::DiagnosticStatusWrapper& stat, 
+      bool& allOk);
+    void nodeActionClientDiagnostic(InfoElement* nodeElement, diagnostic_updater::DiagnosticStatusWrapper& stat,
+      bool& allOk);
 
-    void tfPublisherDiagnostic(InfoElement* nodeElement, diagnostic_updater::DiagnosticStatusWrapper &stat,
-      bool & allOk);
-    void tfTransformDiagnostic(InfoElement* nodeElement, diagnostic_updater::DiagnosticStatusWrapper &stat, 
-      bool & allOk);
+    void tfPublisherDiagnostic(InfoElement* nodeElement, diagnostic_updater::DiagnosticStatusWrapper& stat,
+      bool& allOk);
+    void tfTransformDiagnostic(InfoElement* nodeElement, diagnostic_updater::DiagnosticStatusWrapper& stat, 
+      bool& allOk);
 
     std::vector<int> stringToInteger(std::string sample);
     std::vector<int> getStates(InfoElement* nodeName, std::string type, std::string states_type);

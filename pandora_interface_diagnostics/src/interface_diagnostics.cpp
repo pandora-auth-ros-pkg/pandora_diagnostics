@@ -35,11 +35,14 @@
 * Authors:
 *   Nikos Gountas
 *   Triantafyllos Afouras <afourast@gmail.com>
+*   Chatzieleftheriou Eirini <eirini.ch0@gmail.com>
 *********************************************************************/
 
+#include <string>
+#include <vector>
 #include "pandora_interface_diagnostics/interface_diagnostics.h"
 
-InterfaceDiagnostics::InterfaceDiagnostics() : GenericDiagnostic("System Interfaces"), StateClient(false) 
+InterfaceDiagnostics::InterfaceDiagnostics() : GenericDiagnostic("System Interfaces"), StateClient(false)
 {
   currentState_ = 1;
   ParentElement_ = new InfoElement();
@@ -56,7 +59,7 @@ void InterfaceDiagnostics::startTransition(int newState)
   transitionComplete(newState);
 }
 
-void InterfaceDiagnostics::nodeDiagnostics(diagnostic_updater::DiagnosticStatusWrapper &stat)
+void InterfaceDiagnostics::nodeDiagnostics(diagnostic_updater::DiagnosticStatusWrapper& stat)
 {
   bool allOk = true;
   
@@ -95,7 +98,7 @@ void InterfaceDiagnostics::nodeDiagnostics(diagnostic_updater::DiagnosticStatusW
 }
 
 void InterfaceDiagnostics::nodePublisherDiagnostic(InfoElement* nodeElement,
-  diagnostic_updater::DiagnosticStatusWrapper &stat,bool& allOk)
+  diagnostic_updater::DiagnosticStatusWrapper& stat, bool& allOk)
 {
   std::vector<std::string> publishers = getChildren(nodeElement, "publisher");
   std::vector<int> include_states;
@@ -138,7 +141,7 @@ void InterfaceDiagnostics::nodePublisherDiagnostic(InfoElement* nodeElement,
 
 
 void InterfaceDiagnostics::nodeSubscriberDiagnostic(InfoElement* nodeElement,
-  diagnostic_updater::DiagnosticStatusWrapper &stat, bool & allOk)
+  diagnostic_updater::DiagnosticStatusWrapper& stat, bool& allOk)
 {
   std::vector<std::string> subscribers = getChildren(nodeElement, "subscriber");
   std::vector<int> include_states;
@@ -157,7 +160,7 @@ void InterfaceDiagnostics::nodeSubscriberDiagnostic(InfoElement* nodeElement,
       bool isExcluded = std::find(exclude_states.begin(), exclude_states.end(), currentState_) != exclude_states.end();
       bool isUp = InterfaceTester::checkForSubscribedNode(subscribers[ii], nodeName);
 
-      if ((isIncluded && isExcluded)|| (!isIncluded && !isExcluded))
+      if (isIncluded && isExcluded)
       {
         ROS_WARN("OMG THIS CANNOT HAPPEN");
       }
@@ -180,7 +183,7 @@ void InterfaceDiagnostics::nodeSubscriberDiagnostic(InfoElement* nodeElement,
 }
 
 void InterfaceDiagnostics::nodeActionServerDiagnostic(InfoElement* nodeElement,
-  diagnostic_updater::DiagnosticStatusWrapper &stat, bool & allOk)
+  diagnostic_updater::DiagnosticStatusWrapper& stat, bool& allOk)
 {
   std::vector<std::string> actionServers = getChildren(nodeElement, "actionServer", "serviceName");
   std::vector<int> include_states;
@@ -222,7 +225,7 @@ void InterfaceDiagnostics::nodeActionServerDiagnostic(InfoElement* nodeElement,
 }
 
 void InterfaceDiagnostics::nodeActionClientDiagnostic(InfoElement* nodeElement,
-  diagnostic_updater::DiagnosticStatusWrapper &stat, bool & allOk)
+  diagnostic_updater::DiagnosticStatusWrapper& stat, bool& allOk)
 {
   std::vector<std::string> actionClients = getChildren(nodeElement, "actionClient" , "actionName");
   std::vector<int> include_states;
@@ -265,7 +268,7 @@ void InterfaceDiagnostics::nodeActionClientDiagnostic(InfoElement* nodeElement,
 
 /*
 void InterfaceDiagnostics::tfPublisherDiagnostic(InfoElement* nodeElement,
-  diagnostic_updater::DiagnosticStatusWrapper &stat, bool & allOk)
+  diagnostic_updater::DiagnosticStatusWrapper& stat, bool& allOk)
 {
   std::vector<std::string> children = getChildren(nodeElement, "tf-publisher");
   std::vector<int> include_states;
@@ -308,7 +311,7 @@ void InterfaceDiagnostics::tfPublisherDiagnostic(InfoElement* nodeElement,
 */
 
 void InterfaceDiagnostics::tfTransformDiagnostic(InfoElement* tfParentElement,
-  diagnostic_updater::DiagnosticStatusWrapper &stat, bool & allOk)
+  diagnostic_updater::DiagnosticStatusWrapper& stat, bool& allOk)
 {
   std::vector<std::string> children = getChildren(tfParentElement, "tf-publisher");
   std::vector<int> include_states;
@@ -390,8 +393,8 @@ std::vector<int> InterfaceDiagnostics::stringToInteger(std::string sample)
   for (int ii = 0; ii < strs.size(); ii++)
   {
     int element = atoi(strs[ii].c_str());
-    //~ ROS_ERROR("%d", element);
-    //~ ROS_ERROR("%s", strs[ii].c_str());
+    // ROS_ERROR("%d", element);
+    // ROS_ERROR("%s", strs[ii].c_str());
     list.push_back(element);
   }
   return list;

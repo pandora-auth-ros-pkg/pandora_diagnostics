@@ -1,14 +1,15 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(pandora_interface_diagnostics)
 find_package(catkin REQUIRED COMPONENTS 
-            roscpp 
-            state_manager 
-            state_manager_msgs 
-            diagnostic_updater 
-            interface_tester
-            cmake_modules
-            )
-            
+  roscpp 
+  state_manager 
+  state_manager_msgs 
+  diagnostic_updater 
+  interface_tester
+  cmake_modules
+  roslint
+)
+
 find_package(TinyXML REQUIRED)
 
 include_directories(include ${catkin_INCLUDE_DIRS} ${TinyXML_INCLUDE_DIRS})
@@ -22,14 +23,16 @@ include_directories(include ${catkin_INCLUDE_DIRS} ${TinyXML_INCLUDE_DIRS})
 set(CMAKE_BUILD_TYPE Debug)
 
 catkin_package(
-    DEPENDS TinyXML
-    CATKIN-DEPENDS roscpp 
-                   state_manager 
-                   state_manager_msgs 
-                   diagnostic_updater 
-                   interface_tester
-    INCLUDE_DIRS 
-    LIBRARIES 
+  DEPENDS TinyXML
+  CATKIN-DEPENDS 
+    roscpp 
+    state_manager 
+    state_manager_msgs 
+    diagnostic_updater 
+    interface_tester
+    roslint
+  INCLUDE_DIRS 
+  LIBRARIES 
 )
 
 add_library(generic_diagnostic src/generic_diagnostic.cpp)
@@ -87,12 +90,18 @@ add_dependencies(interface_diagnostics_node state_manager_msgs_gencpp)
 
 ########################  roslint  ##################################
 
-#~ FILE(GLOB_RECURSE ${PROJECT_NAME}_LINT_SRCS 
-  #~ RELATIVE ${PROJECT_SOURCE_DIR} 
-    #~ include/pandora_interface_diagnostics/*.h 
-    #~ src/*.cpp
-    #~ )
-#~ set(ROSLINT_CPP_OPTS 
-    #~ "--filter=-runtime/references")
+set(ROSLINT_CPP_OPTS 
+    "--filter=-whitespace/end_of_line, -runtime/references, -build/header_guard, -whitespace/braces")
+
+FILE(GLOB_RECURSE ${PROJECT_NAME}_LINT_SRCS 
+  RELATIVE ${PROJECT_SOURCE_DIR} 
+    include/pandora_interface_diagnostics/*.h 
+    src/*.cpp
+    )
+LIST(REMOVE_ITEM ${PROJECT_NAME}_LINT_SRCS
+  RELATIVE ${PROJECT_SOURCE_DIR}
+    include/pandora_interface_diagnostics/trimming.h
+    )
+roslint_cpp(${${PROJECT_NAME}_LINT_SRCS})
 
 

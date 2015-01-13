@@ -35,15 +35,15 @@
 * Authors: 
 *   Miltiadis Allamanis <mallamanis@gmail.com>
 *********************************************************************/
-# include <sstream>
+
+#include <string>
+#include <sstream>
 #include "pandora_interface_diagnostics/generic_diagnostic.h"
 
-GenericDiagnostic::GenericDiagnostic(std::string diagnosticName):nh() {
-  _updater.add(diagnosticName,this, &GenericDiagnostic::nodeDiagnostics);
-  _timer = nh.createTimer(ros::Duration(4),
-    &GenericDiagnostic::diagnosticTimerCallback, this);
+GenericDiagnostic::GenericDiagnostic(std::string diagnosticName): nh() {
+  _updater.add(diagnosticName, this, &GenericDiagnostic::nodeDiagnostics);
+  _timer = nh.createTimer(ros::Duration(4), &GenericDiagnostic::diagnosticTimerCallback, this);
   _updater.setHardwareID("none");
-    
 };
 
 void GenericDiagnostic::diagnosticTimerCallback(const ros::TimerEvent&) {

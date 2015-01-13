@@ -37,10 +37,10 @@
 *   Triantafyllos Afouras <afourast@gmail.com>
 *********************************************************************/
 
+#include <string>
 #include "pandora_interface_diagnostics/interfaces_xml_parser.h"
 
 InterfacesXmlParser::InterfacesXmlParser() {
-    
   std::string interfaceListPackagePath;
   
   ros::NodeHandle nh;
@@ -57,49 +57,46 @@ InterfacesXmlParser::InterfacesXmlParser() {
   boost::shared_ptr<TiXmlDocument> doc(new TiXmlDocument);
   
   std::string fullPath = interfaceListPackagePath + "/interfaces_list.xml";
-  filePtr = fopen ( fullPath.c_str(), "r" );
+  filePtr = fopen(fullPath.c_str(), "r");
   doc->LoadFile(filePtr); 
   fclose(filePtr);
 
   TiXmlElement* packagesParent = doc->FirstChildElement("packages");
   
-  if(! packagesParent){
+  if (!packagesParent){
     ROS_ERROR("[Interface Tester] : "
-      "interfaces_list does not contain packages element") ;
+      "interfaces_list does not contain packages element");
     exit(0);
   }
   
-  TiXmlElement*  rosParam_element = 
+  TiXmlElement* rosParam_element = 
     packagesParent->FirstChildElement("include_rosparam");
 
-  while(rosParam_element){
-    
+  while (rosParam_element){
     std::string param = trim(rosParam_element->GetText());
-    std::string packagePath ;
+    std::string packagePath;
     
     if (nh.hasParam(trim(param))) {
       nh.getParam(param, packagePath);
     }  
     else{
-      ROS_ERROR("[Interface Tester] : %s param was not set  ",param.c_str()) ;
+      ROS_ERROR("[Interface Tester] : %s param was not set  ", param.c_str());
       continue;
     }
     
     std::string fullPath = packagePath + "/interfaces.xml";
     
     TiXmlDocument* doc = new TiXmlDocument;
-    filePtr = fopen ( fullPath.c_str(), "r" );
-    doc->LoadFile( filePtr ); 
+    filePtr = fopen(fullPath.c_str(), "r");
+    doc->LoadFile(filePtr); 
     docsVector_.push_back(doc);
     fclose(filePtr);
     rosParam_element = rosParam_element->NextSiblingElement("include_rosparam");
-
   }
-    
 };
 
 InterfacesXmlParser::~InterfacesXmlParser(){
-  for(int ii=0; ii < docsVector_.size(); ii++){
+  for (int ii = 0; ii < docsVector_.size(); ii++){
     delete docsVector_[ii]; 
   }
 }

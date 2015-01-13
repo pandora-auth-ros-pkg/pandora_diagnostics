@@ -39,6 +39,7 @@
 #ifndef GENERIC_DIAGNOSTIC_H
 #define GENERIC_DIAGNOSTIC_H
 
+#include <string>
 #include "diagnostic_updater/diagnostic_updater.h"
 
 class GenericDiagnostic {
@@ -47,13 +48,11 @@ class GenericDiagnostic {
   ros::Timer _timer;
   
   public:
-  
-  GenericDiagnostic(std::string diagnosticName);
+    explicit GenericDiagnostic(std::string diagnosticName);
 
-  virtual void nodeDiagnostics(diagnostic_updater::DiagnosticStatusWrapper &stat)=0;
+    virtual void nodeDiagnostics(diagnostic_updater::DiagnosticStatusWrapper &stat)=0;
 
-  void diagnosticTimerCallback(const ros::TimerEvent&);
-  
+    void diagnosticTimerCallback(const ros::TimerEvent&);
 };
 
 #endif

@@ -40,39 +40,35 @@
 #ifndef NODE_DIAGNOSTICS_H
 #define NODE_DIAGNOSTICS_H
 
-#include <iostream>
 #include <stdio.h>
+#include <iostream>
+#include <string>
+#include <vector>
 
 #include <ros/ros.h>
+
 #include "state_manager/state_client.h"
 #include "interface_tester/interface_tester.h"
 #include "pandora_interface_diagnostics/info_element.h"
-
-#include "trimming.h"
-#include "generic_diagnostic.h"
-#include "interfaces_xml_parser.h"
+#include "pandora_interface_diagnostics/trimming.h"
+#include "pandora_interface_diagnostics/generic_diagnostic.h"
+#include "pandora_interface_diagnostics/interfaces_xml_parser.h"
 
 class NodeDiagnostics: GenericDiagnostic, StateClient {
+  public:
+    NodeDiagnostics();
+    ~NodeDiagnostics();
 
- public:
+    virtual void startTransition(int newState);
 
-  NodeDiagnostics();
+  private:
+    virtual void nodeDiagnostics(diagnostic_updater::DiagnosticStatusWrapper& stat);
 
-  ~NodeDiagnostics();
+    void nodeExistanceDiagnostic(InfoElement* nodeElement,
+      diagnostic_updater::DiagnosticStatusWrapper& stat, bool& allOk);
 
-  virtual void startTransition (int newState);
-
- private:
-
-  virtual void nodeDiagnostics(diagnostic_updater::DiagnosticStatusWrapper &stat);
-
-  void nodeExistanceDiagnostic(InfoElement* nodeElement,
-    diagnostic_updater::DiagnosticStatusWrapper &stat, bool & allOk);
-
-  std::vector<InfoElement*> packages_;
-  InfoElement* ParentElement_;
-
-
+    std::vector<InfoElement*> packages_;
+    InfoElement* ParentElement_;
 };
 
-#endif
+#endif  // NODE_DIAGNOSTICS_H

@@ -35,52 +35,40 @@
 * Authors: 
 * Chamzas Konstantinos <chamzask@gmail.com>
 *********************************************************************/
-#ifndef INFOELEMENT_H
-#define INFOELEMENT_H
+#ifndef INFO_ELEMENT_H
+#define INFO_ELEMENT_H
 
+#include <stdio.h>
 #include <iostream>
 #include <sstream>
-#include "tinyxml.h"
-#include <stdio.h>
-
+#include <string>
+#include <vector>
+#include <tinyxml.h>
 #include <boost/algorithm/string.hpp>
+
 #include <ros/ros.h>
+#include <ros/console.h>
+
 #include "state_manager/state_client.h"
 #include "interface_tester/interface_tester.h"
-
-#include <ros/console.h>
-#include "trimming.h"
-#include "generic_diagnostic.h"
-#include "interfaces_xml_parser.h"
-
-
-
-
-
+#include "pandora_interface_diagnostics/trimming.h"
+#include "pandora_interface_diagnostics/generic_diagnostic.h"
+#include "pandora_interface_diagnostics/interfaces_xml_parser.h"
 
 class InfoElement {
+  public:
+    InfoElement();
+    explicit InfoElement(TiXmlElement*  newElement);
+    ~InfoElement();
 
- public:
+    std::vector<InfoElement*> getAllElements();
+    std::vector<InfoElement*> getChildren(std::string type);
+    std::string Attribute(std::string attribute);
 
-  InfoElement();
-  InfoElement(TiXmlElement*  newElement);
-
-  ~InfoElement();
-  
-  std::vector<InfoElement *> getAllElements();
-  std::vector<InfoElement *> getChildren(std::string type );
-  std::string Attribute(std::string attribute);
-  //~ bool checkForAttribute(const std::string &_value);
-  //~ bool checkForAttributes( const std::vector<string> &_values);
-
-
- private:
-
-
-  std::vector<TiXmlDocument*> docsVector_;
-  TiXmlElement * XmlElement_;
-  InterfacesXmlParser parser_;
-
+  private:
+    std::vector<TiXmlDocument*> docsVector_;
+    TiXmlElement* XmlElement_;
+    InterfacesXmlParser parser_;
 };
 
-#endif
+#endif  // INFO_ELEMENT_H

@@ -37,28 +37,23 @@
 *   Triantafyllos Afouras <afourast@gmail.com>
 *********************************************************************/
 
+#include <string>
+#include <vector>
 #include "pandora_interface_diagnostics/node_diagnostics.h"
 
-NodeDiagnostics::NodeDiagnostics() :
-  GenericDiagnostic("System Nodes"),
-  StateClient(false) {
-    
+NodeDiagnostics::NodeDiagnostics() : GenericDiagnostic("System Nodes"), StateClient(false) {
   ParentElement_ = new InfoElement();
   packages_= ParentElement_->getAllElements();
-
 }
 
-void NodeDiagnostics::nodeDiagnostics(
-  diagnostic_updater::DiagnosticStatusWrapper &stat){
-  
+void NodeDiagnostics::nodeDiagnostics(diagnostic_updater::DiagnosticStatusWrapper& stat){
   bool allOk = true;
   std::vector<InfoElement*> nodeElements;
   
-  for(int ii=0; ii < packages_.size(); ii++){
-
+  for (int ii = 0; ii < packages_.size(); ii++){
     nodeElements = packages_[ii]->getChildren("node"); 
-    for(int jj=0; jj < nodeElements.size(); jj++){ 
     
+    for (int jj = 0; jj < nodeElements.size(); jj++){ 
       nodeExistanceDiagnostic(nodeElements[jj], stat, allOk);
     }
     if (allOk) {
@@ -66,26 +61,23 @@ void NodeDiagnostics::nodeDiagnostics(
         "All nodes are up and running");
     }
      else {
-      
       stat.summary(diagnostic_msgs::DiagnosticStatus::WARN,
         "Some nodes are down");
     }
-  
   }
-        
 }
 
-NodeDiagnostics::~NodeDiagnostics() {}
+NodeDiagnostics::~NodeDiagnostics() {
+}
 
 void NodeDiagnostics::nodeExistanceDiagnostic(InfoElement* nodeElement, 
-  diagnostic_updater::DiagnosticStatusWrapper &stat, bool & allOk) {
-    
+        diagnostic_updater::DiagnosticStatusWrapper& stat, bool& allOk) {
   std::string nodeName = nodeElement->Attribute("name");
   if (!InterfaceTester::checkForNode(nodeName)){
-    stat.add(nodeName,"Down");
+    stat.add(nodeName, "Down");
     allOk = false;
-  }  
-    
+  }
 }
 
-void NodeDiagnostics::startTransition (int newState) {}
+void NodeDiagnostics::startTransition(int newState) {
+}

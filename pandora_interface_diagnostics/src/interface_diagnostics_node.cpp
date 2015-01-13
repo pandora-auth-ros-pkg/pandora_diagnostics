@@ -40,7 +40,8 @@
 #include "pandora_interface_diagnostics/interface_diagnostics.h"
 #include "pandora_interface_diagnostics/node_diagnostics.h"
 
-int main(int argc, char **argv){
+int main(int argc, char **argv)
+{
   ros::init(argc, argv, "interface_diagnostics_node");
   NodeDiagnostics nd;
   InterfaceDiagnostics id;
