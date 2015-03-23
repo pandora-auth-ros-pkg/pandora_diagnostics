@@ -1,4 +1,4 @@
-<package>
+<package format="2">
   <name>pandora_interface_diagnostics</name>
   <version>0.0.0</version>
   <description>pandora_interface_diagnostics</description>
@@ -13,21 +13,15 @@
   <author>Afouras Triantafyllos</author>
 
   <buildtool_depend>catkin</buildtool_depend>
-
-   <build_depend>roscpp</build_depend> 
-   <build_depend>diagnostic_updater</build_depend> 
-   <build_depend>state_manager</build_depend> 
-   <build_depend>state_manager_msgs</build_depend> 
-   <build_depend>interface_tester</build_depend> 
-   <build_depend>tinyxml</build_depend> 
-   <build_depend>cmake_modules</build_depend> 
+  
+   <build_depend>cmake_modules</build_depend>
    
-   <run_depend>roscpp</run_depend> 
-   <run_depend>diagnostic_updater</run_depend> 
-   <run_depend>state_manager</run_depend> 
-   <run_depend>state_manager_msgs</run_depend> 
-   <run_depend>interface_tester</run_depend> 
-   <run_depend>tinyxml</run_depend> 
+   <depend>roscpp</depend> 
+   <depend>diagnostic_updater</depend> 
+   <depend>state_manager</depend> 
+   <depend>state_manager_msgs</depend> 
+   <depend>interface_tester</depend> 
+   <depend>tinyxml</depend> 
 
   <export>
   </export>
